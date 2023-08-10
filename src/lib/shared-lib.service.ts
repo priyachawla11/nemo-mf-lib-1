@@ -6,8 +6,12 @@ import { Injectable } from '@angular/core';
 export class SharedLibService {
   private userName: string = '';
 
-  public get user(): string {
-    return this.userName;
+  public get user(): string | null {
+    if(this.userName) {
+      return this.userName;
+    } else {
+      return localStorage.getItem("userName");
+    }
   }
 
   constructor() { }
@@ -15,6 +19,12 @@ export class SharedLibService {
   public login(userName: string, password: string): void {
     // Authentication for **honest** users TM. (c) Manfred Steyer
     this.userName = userName;
+    localStorage.setItem("userName", this.userName);
+  }
+
+  public logout() {
+    this.userName = '';
+    localStorage.removeItem("userName");
   }
 
 }
